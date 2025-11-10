@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-NULL_CHAR = chr(0)
+NULL_CHAR = 0x0
+REPORT_SIZE = 8
+RELEASE_KEY = [0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]
 
 
 # Enter: 0x28
@@ -23,12 +25,18 @@ def write_report(report):
         fd.write(report)
     
 
+def create_key(char):
+    report_array = bytearray(REPORT_SIZE)
+    report_array[2] = ALPHABET[char]
+    return report_array
+
+
 def send_message(message):
     for char in message:
         #report_array = [chr(0x0), chr(0x0), chr(ALPHABET[char]), chr(0x0), chr(0x0), chr(0x0), chr(0x0), chr(0x0)]
-        report_array = bytearray([MOD_LEFT_SHIFT, 0x0, ALPHABET[char], 0x0, 0x0, 0x0, 0x0, 0x0])
+        report_array = create_key(char)
         write_report(report_array)
-        #write_report(bytearray([0x0, 0x0, 0x0, 0x0, 0x0, 0x0,0x0,0x0])) # release key
+        write_report(bytearray(RELEASE_KEY))
 
 # # Press a
 #write_report(NULL_CHAR*2+chr(0x1D)+NULL_CHAR*5)
@@ -36,4 +44,4 @@ def send_message(message):
 # write_report(NULL_CHAR*2+chr(0x15)+NULL_CHAR*5)
 # write_report(NULL_CHAR*2+chr(0x12)+NULL_CHAR*5)
 
-send_message("hola")
+send_message("que tal madafaca")
