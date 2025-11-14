@@ -44,4 +44,4 @@ def send_message(message):
 # write_report(NULL_CHAR*2+chr(0x15)+NULL_CHAR*5)
 # write_report(NULL_CHAR*2+chr(0x12)+NULL_CHAR*5)
 
-send_message("que tal madafaca")
+send_message("zero volts")

@@ -1,0 +1,11 @@
+# https://github.com/raspberrypi/documentation/blob/83aeab3278fc7b648022fb56b30e4d62c5ccba24/linux/usage/systemd.md
+
+[Unit]
+Description=ZeroVolts HID Gadget
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/zv-hid-setup.sh
+
+[Install]
+WantedBy=multi-user.target
