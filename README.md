@@ -36,11 +36,11 @@ Esto nos sirve para poder definir gadgets USB dentro del espacio de usuario.
 
 # Scripts
 
-1. zv-hid-setup.sh
+1. **zv-hid-setup.sh**
 
-El script crea en /sys/kernel/config/usb_gadget/ un dispositivo USB virtual "zerovolts-hid" 
+   El script crea en /sys/kernel/config/usb_gadget/ un dispositivo USB virtual "zerovolts-hid" 
 
-2. zv-hid.service
+2. **zv-hid.service**
 
    Ejecuta automaticamente el script para crear el gadget en el inicio. El servicio debe ser creado en:
     ```bash
@@ -51,9 +51,19 @@ El script crea en /sys/kernel/config/usb_gadget/ un dispositivo USB virtual "zer
     ```bash
    /usr/local/bin/
    ```
+
+   Dar permisos de ejecucion:
+   ```bash
+   sudo chmod +x zv-hid-setup.sh
+   ```
+
+3. **test_script.py**
+
+   Script basico en python para probar el envio de teclas automatico
    
 ### Capitulos de youtube
 -----
 Videos con el proceso de configuración y programación 
 
 1. [Configuracion y creacion de script](https://www.youtube.com/watch?v=WQ7kpHHoVA4)
+2. [Correccion del descriptor y corriendo script de prueba](https://www.youtube.com/watch?v=kefJoc_F7kg)

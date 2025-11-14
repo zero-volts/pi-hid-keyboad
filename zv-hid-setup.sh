@@ -8,6 +8,13 @@
 GADGET_DIR=/sys/kernel/config/usb_gadget/zerovolts-hid
 UDC_PATH="$GADGET_DIR/UDC"
 STRING_LANGUAGE_PATH="$GADGET_DIR/strings/0x409"
+CONFIG_LINK="$GADGET_DIR/configs/c.1/hid.usb0"
+
+# If the gadget is already bind just exit!
+if [ -d "$GADGET_DIR" ] && [ -s "$UDC_PATH" ]; then
+    echo "[0/10] Gadget already exists and is bound to $(cat "$UDC_PATH"). Nothing to do."
+    exit 0
+fi
 
 # 1.- Mounting configfs if is not (this allow to create the gadget)
 if ! mountpoint -q /sys/kernel/config; then
@@ -46,11 +53,11 @@ echo "  *** idVendor: $(cat idVendor), idProduct: $(cat idProduct), bcdUSB: $(ca
 # 5 .- Strings configuration
 # The 0x409 = en-US
 echo "[5/10] Writing device string configuration"
-mkdir -p "$GADGET_DIR/strings/0x409"
-printf 'Zerovolts'          > "$GADGET_DIR/strings/0x409/manufacturer"
-printf 'zv-hid'             > "$GADGET_DIR/strings/0x409/product"
-printf 'zv2500000001'       > "$GADGET_DIR/strings/0x409/serialnumber"
-echo "  *** manufacturer: $(cat "$GADGET_DIR/strings/0x409/manufacturer"), product: $(cat "$GADGET_DIR/strings/0x409/product")"
+mkdir -p "$STRING_LANGUAGE_PATH"
+printf 'Zerovolts'          > "$STRING_LANGUAGE_PATH/manufacturer"
+printf 'zv-hid'             > "$STRING_LANGUAGE_PATH/product"
+printf 'zv2500000001'       > "$STRING_LANGUAGE_PATH/serialnumber"
+echo "  *** manufacturer: $(cat "$STRING_LANGUAGE_PATH/manufacturer"), product: $(cat "$STRING_LANGUAGE_PATH/product")"
 
 # 6 .- Making the gadget configuration (E.2 Configuration Descriptor - PDF)
 echo "[6/10] Gadget configuration"
@@ -132,12 +139,17 @@ if [ ! -d "$GADGET_DIR/configs/c.1" ]; then
     mkdir -p "$GADGET_DIR/configs/c.1/strings/0x409"
 fi
 
-ln -s "$GADGET_DIR/functions/hid.usb0" "$GADGET_DIR/configs/c.1"
+if [ ! -L "$CONFIG_LINK" ]; then
+    ln -s "$GADGET_DIR/functions/hid.usb0" "$CONFIG_LINK"
+    echo "  *** Linked hid.usb0 -> configs/c.1"
+else
+    echo "  *** Link hid.usb0 already exists"
+fi
 
 echo "[10/10] Showing UDC available in the system"
 ls /sys/class/udc
 
-echo "To bind manually replace <UDC_NAME> BY 'ls /sys/class/udc' result"
+echo "To bind manually replace <UDC_NAME> by 'ls /sys/class/udc' result"
 echo "  *** sudo bash -c 'echo <UDC_NAME> > $UDC_PATH'"
 echo "To unbind"
 echo "  *** sudo bash -c 'echo \"\" > $UDC_PATH'"

@@ -2,6 +2,10 @@
 
 [Unit]
 Description=ZeroVolts HID Gadget
+After=local-fs.target sys-kernel-config.mount
+Wants=sys-kernel-config.mount
+# Check that /sys/kernel/config is already mounted
+RequiresMountsFor=/sys/kernel/config
 
 [Service]
 Type=oneshot
