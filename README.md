@@ -67,3 +67,4 @@ Videos con el proceso de configuración y programación
 
 1. [Configuracion y creacion de script](https://www.youtube.com/watch?v=WQ7kpHHoVA4)
 2. [Correccion del descriptor y corriendo script de prueba](https://www.youtube.com/watch?v=kefJoc_F7kg)
+3. [Inicializacion automatica con systemd](https://www.youtube.com/watch?v=AaPY0jVu0lY)
